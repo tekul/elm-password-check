@@ -1,0 +1,9 @@
+elm-stuff
+elm.js
+*.ninja
+.ninja_log
+login.js
+node_modules
+target
+dist
+package-lock.json
