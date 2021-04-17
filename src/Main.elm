@@ -109,7 +109,7 @@ getPwnedMatches password =
 
 labelFor : String -> String -> Html msg
 labelFor for name =
-    Html.label [ style "font-size" "0.875rem", style "font-weight" "500", Html.Attributes.for for ] [ text name ]
+    Html.label [ class "block text-sm font-medium text-gray-700", Html.Attributes.for for ] [ text name ]
 
 
 view : Model -> Html Msg
@@ -119,6 +119,7 @@ view model =
             [ labelFor "password" "Password"
             , input
                 [ id "password"
+                , class "form-input"
                 , placeholder "Choose a password"
                 , autocomplete True
                 , autofocus True
@@ -130,6 +131,7 @@ view model =
             , meter
                 [ Html.Attributes.min "0"
                 , Html.Attributes.max "4"
+                , class "w-full rounded"
                 , attribute "low" "2"
                 , attribute "high" "3"
                 , attribute "optimum" "4"
@@ -140,7 +142,7 @@ view model =
                     |> value
                 ]
                 []
-            , Html.button [] [ text "Pwned?" ]
+            , Html.button [ class "btn mt-2 px-3 py-2" ] [ text "Have I Been Pwned?" ]
             ]
         , case model.zxcvbn of
             Nothing ->
@@ -178,15 +180,21 @@ viewZxcvbn zxcvbn =
                     text ""
 
                 Just w ->
-                    p [] [ text w ]
+                    p [ class "font-semibold" ] [ text w ]
 
         feedback =
-            warning :: List.map (\s -> p [] [ text s ]) zxcvbn.feedback.suggestions
+            warning :: List.map (\s -> p [ class "text-sm" ] [ text s ]) zxcvbn.feedback.suggestions
 
         sequence =
             List.map
                 (\( pattern, token ) ->
-                    p [] [ text ("Pattern: " ++ pattern ++ ", Token: " ++ token) ]
+                    p []
+                        [ span [ class "text-gray-500" ] [ text "Pattern: " ]
+                        , text pattern
+                        , text ", "
+                        , span [ class "text-gray-500" ] [ text "Token: " ]
+                        , text token
+                        ]
                 )
                 zxcvbn.matchSequence
     in
